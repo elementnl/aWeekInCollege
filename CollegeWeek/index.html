@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>A Week In College</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="style.css" />
+
+        <!-- FAVICON -->
+        <link rel="icon" sizes="180x180" href="apple-touch-icon.png">
+
+        <!-- FONT -->
+        <link href="https://fonts.cdnfonts.com/css/montserrat" rel="stylesheet">
+        
+        <!-- Chart API -->
+        <script
+            src="https://cdn.anychart.com/releases/v8/js/anychart-core.min.js"></script>
+        <script
+            src="https://cdn.anychart.com/releases/v8/js/anychart-sankey.min.js"></script>
+    </head>
+    <body>
+
+        <!-- Heading and Title -->
+        <h1>Average Week At Ohio State</h1>
+        <h4>Sankey diagram created using AnyChartJS</h4>
+
+        <!-- Main Container -->
+        <div id="container"></div>
+
+        <!-- Script -->
+        <script>
+            anychart.onDocumentReady(function () {
+
+                // Data Input
+                const data = [
+                    {from: "My Week",        to: "School",                weight: 23.15},
+                    {from: "My Week",        to: "Career/Work",           weight: 25.5},
+                    {from: "My Week",        to: "Health/Fitness",        weight: 10.75},
+                    {from: "My Week",        to: "Personal",              weight: 45.2},
+                    {from: "My Week",        to: "Other",                 weight: 63.4},
+                    {from: "School",         to: "Class/Lectures",        weight: 4.15},
+                    {from: "School",         to: "Homework",              weight: 9,     desc: "Class assigned work"},
+                    {from: "School",         to: "Extra Study",           weight: 10,    desc: "Additional exam prep, reading, etc."},
+                    {from: "Career/Work",    to: "Personal Projects",     weight: 12,    desc: "Coffee business, music, portfolio, etc."},
+                    {from: "Career/Work",    to: "Career Prep",           weight: 3.5,   desc: "Applying for internships, resume, etc."},
+                    {from: "Career/Work",    to: "Job (RPAC)",            weight: 10},
+                    {from: "Health/Fitness", to: "Gym",                   weight: 6.75},
+                    {from: "Health/Fitness", to: "Club Sport",            weight: 4,     desc: "Club Tennis"},
+                    {from: "Personal",       to: "Social Activities/Fun", weight: 14.5,  desc: "Movies, friends, parties, going out, etc."},
+                    {from: "Personal",       to: "Personal Care/Hygiene", weight: 3.7,   desc: "Showers, hygiene, self-care, etc"},
+                    {from: "Personal",       to: "Leisure (Alone)",       weight: 14,    desc: "Social media, instruments, TV, etc"},
+                    {from: "Personal",       to: "Eating",                weight: 13},
+                    {from: "Other",          to: "Sleep",                 weight: 56.2},
+                    {from: "Other",          to: "Travel Time",           weight: 7.2,   desc: "Walking around campus"},                 
+                ];
+
+                // Create chart using data
+                let chart = anychart.sankey(data);
+
+                // Chart background
+                var background = chart.background();
+                background.fill("#01243A");
+
+                // Basic appearance tweaks
+                chart.padding(20, 200);
+                chart.nodeWidth("50%");
+
+                // Initialize color palette
+                chart.palette([
+                    "#F1433A",
+                    "#999999"
+                ]);
+
+                // Customize links
+                chart.flow({
+                    normal: {
+                        fill: function () {
+                            return anychart.color.lighten(this.sourceColor, 0.5) + " " + 0.3;
+                        }
+                    },
+                    hovered: {
+                        fill: function () {
+                            return this.sourceColor + " " + 0.8;
+                        }
+                    }
+                });
+
+                // Text customization
+                chart.node().labels().useHtml(true);
+                chart.node().labels().format("<span style='font-weight:bold; color:white;'>{%name}</span>");
+
+                // Tooltip changes
+                chart.node().tooltip().format("Time Spent: {%value} hours");
+                chart.flow().tooltip().format("Time Spent: {%value} hours\n\n{%desc}");
+
+                // Assign container
+                chart.container("container");
+
+                // Draw chart
+                chart.draw();
+                
+            })
+        </script>
+    </body>
+</html>
